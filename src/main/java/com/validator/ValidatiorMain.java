@@ -18,13 +18,13 @@ public class ValidatiorMain {
 		loadData(words);
 
 		long startTimeWithoutData = System.currentTimeMillis();
-		
+
 		Set<String> validWords = checkValidWords(words);
 		System.out.println("Valid Words = " + validWords); // 56761 valid words
 
 		long endTime = System.currentTimeMillis();
 		System.out.println("Execution time for all program: " + (endTime - startTime) + " ms"); // ~ 1118 ms
-		System.out.println("Execution time for program without loaded data: " + (endTime - startTimeWithoutData) + " ms"); // ~ 216 ms
+		System.out.println("Execution time for program without loaded data: " + (endTime - startTimeWithoutData) + " ms"); // ~
 	}
 
 	private static void loadData(Set<String> words) {
@@ -33,7 +33,7 @@ public class ValidatiorMain {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
 				Set<String> loadedWords = br.lines().skip(2).collect(Collectors.toSet());
 				loadedWords.stream().filter(line -> (line.length() >= 1 && line.length() <= 9)).forEach(words::add);
-			} 
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,16 +50,10 @@ public class ValidatiorMain {
 					validWords.add(validWord);
 					break;
 				}
-				if (word.length() == 2) {
-					sb = new StringBuilder(word);
-					sb.deleteCharAt(i);
-					validWord = sb.toString();
-					if (validWordsWithOneLetter.contains(validWord)) {
-						validWords.add(validWord);
-						break;
-					}
+				if (validWordsWithOneLetter.contains(validWord) && !validWords.contains(validWord)) {
+					validWords.add(validWord);
+					break;
 				}
-
 			}
 			return validWords.stream();
 		}).collect(Collectors.toSet());
